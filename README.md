@@ -103,6 +103,9 @@ A modern, secure, and intuitive graphical mouse and pointer configuration tool f
    - Automatically activates window focus as the pointer hovers over different client surfaces.
 4. **Auto-Refocus on App Close**:
    - Automatically shifts focus to the window currently directly underneath the cursor when the active window is closed.
+5. **Middle-Click Drag to Scroll**:
+   - Hold the middle mouse button and move the mouse to scroll; release it to stop.
+   - Applies immediately and persists across logins. Disabling it stops motion-based scrolling; the wheel still works. Reset Defaults also disables it.
 
 ---
 
