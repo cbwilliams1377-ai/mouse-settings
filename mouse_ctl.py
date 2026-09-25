@@ -129,7 +129,12 @@ def validate_bool(val, default: bool) -> bool:
     if isinstance(val, bool):
         return val
     if isinstance(val, str):
-        return val.lower() in ("true", "1", "yes")
+        low = val.lower()
+        if low in ("true", "1", "yes"):
+            return True
+        if low in ("false", "0", "no"):
+            return False
+        return default
     if isinstance(val, (int, float)):
         return bool(val)
     return default
@@ -378,7 +383,6 @@ def get_current_status():
         "scroll_button_lock": scroll_button_lock,
         "middle_drag_scroll": scroll_method == "on_button_down" and scroll_button == 274 and not scroll_button_lock,
         "mouse_refocus": mouse_refocus,
-        "battery": get_battery(),
         "button_mappings": button_mappings
     }
 
@@ -639,7 +643,7 @@ def main():
                 "natural_scroll": False,
                 "left_handed": False,
                 "scroll_factor": 1.0,
-                "scroll_method": "no_scroll",
+                "scroll_method": "",
                 "scroll_button": 0,
                 "scroll_button_lock": False,
                 "mouse_refocus": True,
@@ -687,10 +691,13 @@ def main():
                         has_input_change = True
                     if "middle_drag_scroll" in payload:
                         enabled = validate_bool(payload["middle_drag_scroll"], current["middle_drag_scroll"])
-                        current["scroll_method"] = "on_button_down" if enabled else "no_scroll"
                         if enabled:
+                            current["scroll_method"] = "on_button_down"
                             current["scroll_button"] = 274
                             current["scroll_button_lock"] = False
+                        else:
+                            current["scroll_method"] = ""
+                            current["scroll_button"] = 0
                         has_input_change = True
                     if "mouse_refocus" in payload:
                         current["mouse_refocus"] = validate_bool(payload["mouse_refocus"], current["mouse_refocus"])
